@@ -7,6 +7,8 @@
 /target
 .svn
 .myeclipse/
-
+.classpath
 .idea/
 JgWeb.iml
+.project
+.settings/
