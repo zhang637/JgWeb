@@ -28,5 +28,4 @@ public class UserInfoDAO extends BaseDao {
         super.setTableName("user_info");
         super.setModelName("UserInfo");
     }
-
 }

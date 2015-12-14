@@ -17,16 +17,15 @@ import com.zhaidaosi.game.jgframework.common.sdm.BaseDao;
  */
 @Repository
 public class UserDAO extends BaseDao {
-    // property constants
-    public static final String USERNAME = "username";
-    public static final String PASSWORD = "password";
-    public static final String NICKNAME = "nickname";
-    public static final String LAST_LOGIN_TIME = "lastLoginTime";
-    public static final String CREAT_TIME = "creatTime";
+	// property constants
+	public static final String USERNAME = "username";
+	public static final String PASSWORD = "password";
+	public static final String NICKNAME = "nickname";
+	public static final String LAST_LOGIN_TIME = "lastLoginTime";
+	public static final String CREAT_TIME = "creatTime";
 
-    public UserDAO() {
-        super.setTableName("user");
-        super.setModelName("User");
-    }
-
+	public UserDAO() {
+		super.setTableName("user");
+		super.setModelName("User");
+	}
 }

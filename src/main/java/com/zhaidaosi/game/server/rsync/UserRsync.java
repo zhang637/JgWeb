@@ -12,7 +12,6 @@ import com.zhaidaosi.game.server.sdm.model.User;
 import com.zhaidaosi.game.server.sdm.service.UserService;
 
 public class UserRsync extends BaseRsync {
-
     private static final Logger log = LoggerFactory.getLogger(UserRsync.class);
 
     @Override
@@ -24,5 +23,4 @@ public class UserRsync extends BaseRsync {
             log.info("rsync => " + user);
         }
     }
-
 }

@@ -1,12 +1,14 @@
 package client;
 
-import com.zhaidaosi.game.jgframework.message.InMessage;
-import com.zhaidaosi.game.jgframework.session.SessionManager;
-import model.AuthResult;
-import model.MyWebSocketClient;
+import java.net.URI;
+
 import org.java_websocket.drafts.Draft_17;
 
-import java.net.URI;
+import com.zhaidaosi.game.jgframework.message.InMessage;
+import com.zhaidaosi.game.jgframework.session.SessionManager;
+
+import model.AuthResult;
+import model.MyWebSocketClient;
 
 public class TestMaxUser {
 
@@ -55,7 +57,6 @@ public class TestMaxUser {
 }
 
 class MaxUserThread extends Thread {
-
     String username;
     String password;
 
@@ -76,5 +77,4 @@ class MaxUserThread extends Thread {
             e.printStackTrace();
         }
     }
-
 }
