@@ -27,12 +27,10 @@ public class TestWebSocket {
 			InMessage msg = new InMessage("init");
 			msg.putMember(SessionManager.SECRET, sercret);
 			ch.send(msg.toString());
-
 			System.out.println(ch.getMessage());
-
 			msg = new InMessage("test.test");
 			msg.putMember("msg", "test");
-			for (int i = 0; i < 100000; i++) {
+			for (int i = 0; i < 10; i++) {
 				ch.send(msg.toString());
 			}
 
@@ -43,9 +41,7 @@ public class TestWebSocket {
 	}
 
 	public static void main(String[] args) throws Exception {
-		long startTime = System.currentTimeMillis();
-		System.out.println(startTime);
-		for (int i = 1000; i < 1100; i++) {
+		for (int i = 0; i < 1; i++) {
 			WebSocketThread t = new WebSocketThread("test" + i, "123456");
 			t.start();
 			Thread.sleep(10);
@@ -69,6 +65,7 @@ class WebSocketThread extends Thread {
 			if (ar != null) {
 				new TestWebSocket(new URI(ar.address), ar.sercret).run();
 			}
+			System.out.println("ar is :" + ar);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

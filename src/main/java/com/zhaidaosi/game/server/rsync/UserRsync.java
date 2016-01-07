@@ -12,15 +12,15 @@ import com.zhaidaosi.game.server.sdm.model.User;
 import com.zhaidaosi.game.server.sdm.service.UserService;
 
 public class UserRsync extends BaseRsync {
-    private static final Logger log = LoggerFactory.getLogger(UserRsync.class);
+	private static final Logger log = LoggerFactory.getLogger(UserRsync.class);
 
-    @Override
-    public void runRsync() {
-        UserService service = (UserService) ServiceManager.getService(UserService.BEAN_ID);
-        for (Map.Entry<Integer, IBaseModel> entry : rsyncMap.entrySet()) {
-            User user = (User) entry.getValue();
-            service.update(user);
-            log.info("rsync => " + user);
-        }
-    }
+	@Override
+	public void runRsync() {
+		UserService service = (UserService) ServiceManager.getService(UserService.BEAN_ID);
+		for (Map.Entry<Integer, IBaseModel> entry : rsyncMap.entrySet()) {
+			User user = (User) entry.getValue();
+			service.update(user);
+			log.info("user - rsync => " + user);
+		}
+	}
 }

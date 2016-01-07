@@ -20,7 +20,7 @@ public class UserInfoRsync extends BaseRsync {
 		for (Map.Entry<Integer, IBaseModel> entry : rsyncMap.entrySet()) {
 			UserInfo userInfo = (UserInfo) entry.getValue();
 			service.update(userInfo);
-			log.info("rsync => " + userInfo);
+			log.info("userinfo-rsync => " + userInfo);
 		}
 	}
 

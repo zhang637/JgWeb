@@ -22,7 +22,7 @@ public class Player extends BasePlayer {
 
 	private UserInfo userInfo;
 	private BasePosition oldPosition;
-	private Map<String, Integer> actionJson = new HashMap<String, Integer>();
+	private Map<Integer, Integer> actionJson = new HashMap<Integer, Integer>();
 
 	static {
 		levelExperience.put(1, 100);
@@ -39,12 +39,18 @@ public class Player extends BasePlayer {
 		this.hp = this.totalHp;
 		this.experience = userInfo.getExperience();
 
+		System.out.println(userInfo.getActions());
 		actionJson = BaseJson.JsonToObject(userInfo.getActions(), Map.class);
 
-		for (Map.Entry<String, Integer> entry : actionJson.entrySet()) {
-			AttackAction attackAction = (AttackAction) ActionManager.getAction(Integer.parseInt(entry.getKey()));
-			attackAction.setLevel(entry.getValue());
-			this.addAction(attackAction);
+		for (Map.Entry<Integer, Integer> entry : actionJson.entrySet()) {
+			try {
+				System.out.println("--" + entry.getKey() + "--" + entry.getValue());
+				AttackAction attackAction = (AttackAction) ActionManager.getAction(entry.getKey());
+				attackAction.setLevel(entry.getValue());
+				this.addAction(attackAction);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		IBaseArea area = AreaManager.getArea(Area.ID);
@@ -63,7 +69,7 @@ public class Player extends BasePlayer {
 				IBaseAction action = entry.getValue();
 				if (action instanceof AttackAction) {
 					((AttackAction) action).setLevel(level);
-					actionJson.put(action.getId() + "", level);
+					actionJson.put(action.getId(), level);
 				}
 				userInfo.setActions(BaseJson.ObjectToJson(actionJson));
 			}
