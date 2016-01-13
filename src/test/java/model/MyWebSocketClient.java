@@ -7,8 +7,12 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.framing.Framedata;
 import org.java_websocket.handshake.ServerHandshake;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MyWebSocketClient extends WebSocketClient {
+	private static final Logger log = LoggerFactory.getLogger(MyWebSocketClient.class);
+
 	private boolean received = false;
 	private String message;
 
@@ -41,14 +45,14 @@ public class MyWebSocketClient extends WebSocketClient {
 
 	@Override
 	public void onOpen(ServerHandshake handshakedata) {
-		System.out.println("--opened connection--");
+		log.info("--opened connection--");
 		// if you plan to refuse connection based on ip or httpfields overload:
 		// onWebsocketHandshakeReceivedAsClient
 	}
 
 	@Override
 	public void onMessage(String message) {
-		System.out.println("onMessage::::" + message + "-------------");
+		log.info("onMessage::::" + message + "-------------");
 		this.message = message;
 		synchronized (this) {
 			received = true;
@@ -57,7 +61,7 @@ public class MyWebSocketClient extends WebSocketClient {
 	}
 
 	public void onFragment(Framedata fragment) {
-		System.out.println("received fragment: " + new String(fragment.getPayloadData().array()));
+		log.info("received fragment: " + new String(fragment.getPayloadData().array()));
 		synchronized (this) {
 			received = true;
 			this.notify();
@@ -68,7 +72,7 @@ public class MyWebSocketClient extends WebSocketClient {
 	public void onClose(int code, String reason, boolean remote) {
 		// The codecodes are documented in class
 		// org.java_websocket.framing.CloseFrame
-		System.out.println("Connection closed by " + (remote ? "remote peer" : "us"));
+		log.info("Connection closed by " + (remote ? "remote peer" : "us"));
 		synchronized (this) {
 			received = true;
 			this.notify();
@@ -84,5 +88,4 @@ public class MyWebSocketClient extends WebSocketClient {
 			this.notify();
 		}
 	}
-
 }

@@ -2,12 +2,16 @@ package client;
 
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.zhaidaosi.game.jgframework.common.http.BaseHttp;
 import com.zhaidaosi.game.jgframework.message.OutMessage;
 
 import model.AuthResult;
 
 public class TestAuth {
+	private static final Logger log = LoggerFactory.getLogger(TestAuth.class);
 
 	public static AuthResult auth(String username, String password) throws Exception {
 		String address, sercret;
@@ -17,7 +21,7 @@ public class TestAuth {
 		params.put("password", password);
 		String res = BaseHttp.post("http://127.0.0.1:18080/login", params);
 		OutMessage om = OutMessage.getMessage(res);
-		System.out.println("::::om::::::" + om.getCode() + "----" + om.getH() + "---" + om.getResult());
+		log.info("OutMessage : " + om.getCode() + "--" + om.getH() + "--" + om.getResult());
 		if (om.getCode() == 0) {
 			address = (String) om.getResultValue("address");
 			sercret = (String) om.getResultValue("secret");
@@ -29,8 +33,6 @@ public class TestAuth {
 	}
 
 	public static void main(String[] args) throws Exception {
-		long startTime = System.currentTimeMillis();
-		System.out.println(startTime);
 		for (int i = 0; i < 1; i++) {
 			AuthThread t = new AuthThread("test" + i, "123456");
 			t.start();
@@ -40,6 +42,8 @@ public class TestAuth {
 }
 
 class AuthThread extends Thread {
+	private static final Logger log = LoggerFactory.getLogger(AuthThread.class);
+
 	String username;
 	String password;
 
@@ -58,12 +62,12 @@ class AuthThread extends Thread {
 			try {
 				String res = BaseHttp.post("http://127.0.0.1:18080/login", params);
 				OutMessage om = OutMessage.getMessage(res);
-				System.out.println("::::om::::::" + om.getCode() + "----" + om.getH() + "---" + om.getResult());
+				log.info("::OutMessage::" + om.getCode() + "----" + om.getH() + "---" + om.getResult());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		long endTime = System.currentTimeMillis();
-		System.out.println("end time : " + endTime + " | run time :" + (endTime - startTime));
+		log.info("end time : " + endTime + " | run time :" + (endTime - startTime));
 	}
 }

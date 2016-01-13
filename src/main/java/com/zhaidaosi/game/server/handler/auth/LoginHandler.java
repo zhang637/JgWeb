@@ -33,7 +33,7 @@ public class LoginHandler extends BaseHandler {
 		if (!BaseString.isEmpty(username) && !BaseString.isEmpty(password)) {
 			User user = userService.findByUserName(username);
 			if (user == null) {
-				OutMessage showError = OutMessage.showError("该用户不存在", 10);
+				OutMessage showError = OutMessage.showError(username + "该用户不存在", 10);
 				log.info(showError.toString());
 				return showError;
 			}

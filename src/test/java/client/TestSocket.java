@@ -1,18 +1,18 @@
 package client;
 
-import java.net.URI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.zhaidaosi.game.jgframework.common.BaseSocket;
 import com.zhaidaosi.game.jgframework.message.InMessage;
+import com.zhaidaosi.game.jgframework.message.OutMessage;
 import com.zhaidaosi.game.jgframework.session.SessionManager;
 
 import model.AuthResult;
 
 class TestSocket {
 	public static void main(String[] args) {
-		long startTime = System.currentTimeMillis();
-		System.out.println("start time : " + startTime);
-		for (int i = 1; i <= 100; i++) {
+		for (int i = 0; i < 1; i++) {
 			MyThread t = new MyThread("test" + i, "123456");
 			t.start();
 		}
@@ -20,6 +20,8 @@ class TestSocket {
 }
 
 class MyThread extends Thread {
+	private Logger log = LoggerFactory.getLogger(MyThread.class);
+
 	String username;
 	String password;
 
@@ -35,25 +37,32 @@ class MyThread extends Thread {
 			if (ar != null) {
 				InMessage msg = new InMessage("init");
 				msg.putMember(SessionManager.SECRET, ar.sercret);
-				URI uri = new URI(ar.address);
-				BaseSocket serverSocket = BaseSocket.getNewInstance(uri.getHost(), uri.getPort());
-
-				System.out.println(serverSocket.request(msg));
+				// URI uri = new URI(ar.address);
+				// BaseSocket serverSocket =
+				// BaseSocket.getNewInstance(uri.getHost(), uri.getPort());
+				BaseSocket serverSocket = BaseSocket.getNewInstance("127.0.0.1", 28080);
+				OutMessage request = serverSocket.request(msg);
+				log.info(request.getH() + "-->" + request.getResult());
 
 				msg = new InMessage("test.test");
 				msg.putMember("msg", "test");
-				for (int i = 0; i < 10000; i++) {
-					serverSocket.request(msg);
-					// for (int j = 0; j < 10; j++) {
-					// serverSocket.heartBeat();
-					// System.out.println("send heartBeat");
-					// Thread.sleep(100);
-					// }
+				for (int i = 0; i < 1000; i++) {
+					OutMessage request2 = serverSocket.request(msg);
+					log.info(request2.getH() + "--->" + request2.getResult());
+					for (int j = 0; j < 10; j++) {
+						serverSocket.heartBeat();
+						// Thread.sleep(10);
+						log.info("send heartBeat...");
+					}
 				}
+				msg = new InMessage("onlineuser");
+				msg.putMember("msg", "test");
+				OutMessage request2 = serverSocket.request(msg);
+				log.info(request2.getH() + "--->" + request2.getResult());
 				serverSocket.close();
 			}
 			long endTime = System.currentTimeMillis();
-			System.out.println("end time : " + endTime + " | run time :" + (endTime - startTime));
+			log.info("end time : " + endTime + " | run time :" + (endTime - startTime));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

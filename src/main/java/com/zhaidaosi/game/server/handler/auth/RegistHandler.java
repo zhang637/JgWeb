@@ -1,5 +1,8 @@
 package com.zhaidaosi.game.server.handler.auth;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.zhaidaosi.game.jgframework.common.BaseString;
 import com.zhaidaosi.game.jgframework.common.spring.ServiceManager;
 import com.zhaidaosi.game.jgframework.handler.BaseHandler;
@@ -11,6 +14,8 @@ import com.zhaidaosi.game.server.sdm.service.UserService;
 import io.netty.channel.Channel;
 
 public class RegistHandler extends BaseHandler {
+	private static final Logger log = LoggerFactory.getLogger(RegistHandler.class);
+
 	UserService userService = (UserService) ServiceManager.getService(UserService.BEAN_ID);
 
 	@Override
@@ -18,7 +23,7 @@ public class RegistHandler extends BaseHandler {
 		String username = (String) im.getMember("username");
 		String password = (String) im.getMember("password");
 		String nickname = (String) im.getMember("nickname");
-
+		log.info("username:" + username + "--" + password + "--" + nickname);
 		if (BaseString.isEmpty(username) || BaseString.isEmpty(password) || BaseString.isEmpty(nickname)) {
 			return OutMessage.showError("输入内容不能为空", 10);
 		}

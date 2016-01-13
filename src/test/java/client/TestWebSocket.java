@@ -3,6 +3,8 @@ package client;
 import java.net.URI;
 
 import org.java_websocket.drafts.Draft_17;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.zhaidaosi.game.jgframework.message.InMessage;
 import com.zhaidaosi.game.jgframework.session.SessionManager;
@@ -11,6 +13,8 @@ import model.AuthResult;
 import model.MyWebSocketClient;
 
 public class TestWebSocket {
+	private static final Logger log = LoggerFactory.getLogger(TestWebSocket.class);
+
 	private final URI uri;
 
 	private String sercret;
@@ -27,17 +31,16 @@ public class TestWebSocket {
 			InMessage msg = new InMessage("init");
 			msg.putMember(SessionManager.SECRET, sercret);
 			ch.send(msg.toString());
-			System.out.println(ch.getMessage());
+			log.info("ch.getmessage:::" + ch.getMessage());
+
 			msg = new InMessage("test.test");
 			msg.putMember("msg", "test");
-			for (int i = 0; i < 10; i++) {
-				ch.send(msg.toString());
-			}
+			ch.send(msg.toString());
 
 			ch.closeBlocking();
 		}
 		long endTime = System.currentTimeMillis();
-		System.out.println("end time : " + endTime + " | run time :" + (endTime - startTime));
+		log.info("end time : " + endTime + " | run time :" + (endTime - startTime));
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -50,6 +53,8 @@ public class TestWebSocket {
 }
 
 class WebSocketThread extends Thread {
+	private static final Logger log = LoggerFactory.getLogger(WebSocketThread.class);
+
 	String username;
 	String password;
 
@@ -65,7 +70,7 @@ class WebSocketThread extends Thread {
 			if (ar != null) {
 				new TestWebSocket(new URI(ar.address), ar.sercret).run();
 			}
-			System.out.println("ar is :" + ar);
+			log.info("ar is :" + ar);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
