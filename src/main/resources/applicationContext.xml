@@ -148,5 +148,4 @@
 
     <!-- service beans -->
     <import resource="classpath*:services.xml"/>
-
 </beans>

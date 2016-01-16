@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.zhaidaosi.game.jgframework.common.BaseJson;
 import com.zhaidaosi.game.jgframework.model.BasePosition;
 import com.zhaidaosi.game.jgframework.model.action.ActionManager;
@@ -18,6 +21,8 @@ import com.zhaidaosi.game.server.rsync.UserInfoRsync;
 import com.zhaidaosi.game.server.sdm.model.UserInfo;
 
 public class Player extends BasePlayer {
+	private static final Logger log = LoggerFactory.getLogger(Player.class);
+
 	private static Map<Integer, Integer> levelExperience = new HashMap<Integer, Integer>();
 
 	private UserInfo userInfo;
@@ -39,17 +44,17 @@ public class Player extends BasePlayer {
 		this.hp = this.totalHp;
 		this.experience = userInfo.getExperience();
 
-		System.out.println(userInfo.getActions());
+		log.info(userInfo.getActions());
 		actionJson = BaseJson.JsonToObject(userInfo.getActions(), Map.class);
 
 		for (Map.Entry<Integer, Integer> entry : actionJson.entrySet()) {
 			try {
-				System.out.println("--" + entry.getKey() + "--" + entry.getValue());
+				log.info(entry.getKey() + "-->" + entry.getValue());
 				AttackAction attackAction = (AttackAction) ActionManager.getAction(entry.getKey());
 				attackAction.setLevel(entry.getValue());
 				this.addAction(attackAction);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("", e);
 			}
 		}
 
